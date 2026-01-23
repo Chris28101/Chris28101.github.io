@@ -1,0 +1,118 @@
+*{
+    box-sizing: border-box;
+
+}
+html,body{
+    margin: 0;
+}
+body{
+    background-color: black;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* font sections */
+    
+    font-family: 'Press Start 2P', system-ui;
+    /* Pixel fonts look best at multiples of 8 or 16 */
+    font-size: 16px; 
+    color: #555; /* To match the grey in your image */
+}
+main{
+    height: 600px;
+    width: 800px;
+    background-color: #fff;
+    display: grid;
+    grid-template-rows: 1fr 1fr auto;
+    
+
+}
+.enemy, .player{
+    display: flex;
+    div{
+        width: 50%;
+    }
+}
+
+.choice-options{
+    display: flex;
+    flex-direction: row;
+}
+.battle-options{
+    display: flex;
+    flex-wrap: wrap;
+    width: 50%;
+    
+}
+.choice{
+width: 50%;
+height: 100px;
+}
+.fight-ui{
+    border: 3px solid rgb(245, 193, 6);
+    border-radius: 16px;
+    justify-content: space-around;
+    width: 50%;
+    background-color: #fff;
+    padding-top: 2rem;
+    text-align: center;
+    
+}
+footer{
+
+    background-color: lightgray;
+}
+.choice{
+    height: 50px;
+    border-radius: 32px;
+    color: white;    font-family: 'Press Start 2P', system-ui;
+    /* Pixel fonts look best at multiples of 8 or 16 */
+    font-size: 16px; 
+    color: white; /* To match the grey in your image */
+    
+}
+#FIGHT{
+    background-color: pink;
+}
+#BAG{
+    background: #e6c20e;
+    background: linear-gradient(180deg, rgba(230, 194, 14, 1) 0%, rgba(51, 48, 17, 1) 100%);
+}
+#POKEMON{
+    background: #8aed3e;
+    background: linear-gradient(180deg, rgba(138, 237, 62, 1) 0%, rgba(66, 89, 66, 1) 100%);
+}
+#RUN{
+    background: #335191;
+    background: linear-gradient(0deg, rgba(51, 81, 145, 1) 35%, rgba(41, 223, 255, 1) 100%);
+}
+.bulbasaur{
+    width: 200px;
+    height: 200px;
+}
+
+#progress {
+    span {
+        box-sizing: content-box;
+        border-radius: 30px;
+    }
+    .outer {
+       width:300px;
+       height: 25px;
+       background-color: #eee;
+       border: gray solid 3px;
+       display: inline-block;
+    }
+    
+    .inner {
+        width:300px;
+        height: 25px;
+        display: inline-block;
+        background-color: rgb(233, 148, 11);
+        transition: 0.3s ease all;
+   }
+
+}
+.player-hud{
+    background-color: lightgray;
+}
