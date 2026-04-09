@@ -5,6 +5,7 @@
 html,body{
     margin: 0;
 }
+
 body{
     background-color: black;
     min-height: 100vh;
@@ -17,6 +18,7 @@ body{
     /* Pixel fonts look best at multiples of 8 or 16 */
     font-size: 16px; 
     color: #555; /* To match the grey in your image */
+  
 }
 main{
     height: 600px;
@@ -25,6 +27,13 @@ main{
     display: grid;
     grid-template-rows: 1fr 1fr auto;
     
+    position: relative;
+    z-index: 1;
+
+    background-image: url("Images/grassLandBattle.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 
 }
 .enemy, .player{
@@ -87,8 +96,11 @@ footer{
     background: linear-gradient(0deg, rgba(51, 81, 145, 1) 35%, rgba(41, 223, 255, 1) 100%);
 }
 .bulbasaur{
-    width: 200px;
-    height: 200px;
+    width: 250px;
+    height: 250px;
+    margin-left: 6rem;
+    margin-top: 7.67rem;
+
 }
 
 #progress {
@@ -113,6 +125,21 @@ footer{
    }
 
 }
-.player-hud{
-    background-color: lightgray;
+#player-hud{
+    margin-left: 5.5rem;
+    margin-top: 3.5rem;
+    /* fix to make better */
+    background-color: rgb(218, 218, 218);
+}
+#char{
+    width: 250px;
+    height: 250px;
+    margin-left: 5.5rem;
+    margin-top: -7.5rem;
+    
+}
+
+#enemy-hud {
+    margin-left: 2rem;
+    margin-top: 2rem;
 }
