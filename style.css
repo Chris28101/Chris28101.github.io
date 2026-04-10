@@ -95,7 +95,7 @@ footer{
     background: #335191;
     background: linear-gradient(0deg, rgba(51, 81, 145, 1) 35%, rgba(41, 223, 255, 1) 100%);
 }
-.bulbasaur{
+#bulb{
     width: 250px;
     height: 250px;
     margin-left: 6rem;
@@ -129,7 +129,7 @@ footer{
     margin-left: 5.5rem;
     margin-top: 3.5rem;
     /* fix to make better */
-    background-color: rgb(218, 218, 218);
+    /* background-color: rgb(218, 218, 218); */
 }
 #char{
     width: 250px;

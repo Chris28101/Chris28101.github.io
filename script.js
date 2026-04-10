@@ -4,6 +4,7 @@ let pokes = [];
 const bulb_endpoint = "./bulbasaur.json";
 const ditto_endpoint = "./ditto.json"
 const char_endpoint = "./charizard.json"
+const charmander_endpoint = "./charmander.json"
 // fetch(e_endpoint).then(
 //     response => response.json().then(data=>{
 //         data.currHp = data.stats[0].base_stat
@@ -37,13 +38,15 @@ const char_endpoint = "./charizard.json"
 //     })
 //     .then(data => console.log(data.name))
 //     .catch(error => console.log(error));
-fetchData()
+fetchPlayerData(charmander_endpoint)
+fetchEnemyData(bulb_endpoint)
 
 
-async function fetchData(){
+async function fetchPlayerData(endpoint){
     
     try{
-        const response = await fetch(char_endpoint)
+        const response = await fetch(endpoint)
+
 
         if(!response.ok){
             throw new Error("could not fetch this resource");
@@ -66,6 +69,7 @@ async function fetchData(){
         let healthElement = document.getElementById("percent")
         healthElement.innerHTML = charHeath + "/" + charHeath
         console.log(charHeath)
+        
 
         // const player_name = `<span class="hud-name">${player.forms[0].name}</span>`;
         //     document.querySelector("#player-hud").innerHTML = player_name;
@@ -74,6 +78,25 @@ async function fetchData(){
     catch(error){
         console.error(error);
     }
+}
+async function fetchEnemyData(endpoint) {
+    const response = await fetch(endpoint)
+
+
+        if(!response.ok){
+            throw new Error("could not fetch this resource");
+        }
+
+        const data = await response.json();
+
+        const bulbImg = data.sprites.front_default
+        const imgElement = document.getElementById("bulb")
+        imgElement.src = bulbImg;
+
+        let bulbHeath = data.stats[0].base_stat
+        let healthElement = document.getElementById("bulbHP")
+        healthElement.innerHTML = bulbHeath + "/" + bulbHeath
+        console.log(bulbHeath)
 }
 
 
