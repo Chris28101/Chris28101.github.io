@@ -38,7 +38,7 @@ const charmander_endpoint = "./charmander.json"
 //     })
 //     .then(data => console.log(data.name))
 //     .catch(error => console.log(error));
-fetchPlayerData(charmander_endpoint)
+fetchPlayerData(bulb_endpoint)
 fetchEnemyData(bulb_endpoint)
 
 
@@ -54,21 +54,21 @@ async function fetchPlayerData(endpoint){
 
         const data = await response.json();
         
-        const charImg = data.sprites.back_default;
+        const pokeImg = data.sprites.back_default;
         
-        const imgElement = document.getElementById("char")
+        const imgElement = document.getElementById("pPoke")
         console.log(imgElement)
         
         //setting this imgs url to the src in the html file to 
-        imgElement.src = charImg;
+        imgElement.src = pokeImg;
         
         // imgElement.style.display = "block";
 
         //char health
-        let charHeath = data.stats[0].base_stat
+        let playerPokeHeath = data.stats[0].base_stat
         let healthElement = document.getElementById("percent")
-        healthElement.innerHTML = charHeath + "/" + charHeath
-        console.log(charHeath)
+        healthElement.innerHTML = playerPokeHeath + "/" + playerPokeHeath
+        console.log(playerPokeHeath)
         
 
         // const player_name = `<span class="hud-name">${player.forms[0].name}</span>`;
@@ -89,14 +89,34 @@ async function fetchEnemyData(endpoint) {
 
         const data = await response.json();
 
-        const bulbImg = data.sprites.front_default
-        const imgElement = document.getElementById("bulb")
-        imgElement.src = bulbImg;
+        const enemyImg = data.sprites.front_default
+        const imgElement = document.getElementById("ePoke")
+        imgElement.src = enemyImg;
 
-        let bulbHeath = data.stats[0].base_stat
-        let healthElement = document.getElementById("bulbHP")
-        healthElement.innerHTML = bulbHeath + "/" + bulbHeath
-        console.log(bulbHeath)
+        let enemyHealth = data.stats[0].base_stat
+        let healthElement = document.getElementById("enemyHP")
+        healthElement.innerHTML = enemyHealth + "/" + enemyHealth
+        console.log(enemyHealth)
+}
+// playerMoves(charmander_endpoint)
+async function playerMoves(endpoint){
+    const response = await fetch(endpoint)
+    if(!response.ok){
+        throw new Error("could not fetch this resource");
+    }
+    const data = await response.json();
+    const playerMove1 = data.moves[0].move.name
+    const playerMove2 = data.moves[1].move.name
+    const playerMove3 = data.moves[2].move.name
+    const playerMove4 = data.moves[3].move.name
+    
+
+
+    document.querySelector("#FIGHT").innerHTML = playerMove1;
+    document.querySelector("#RUN").innerHTML = playerMove2;
+    document.querySelector("#BAG").innerHTML = playerMove3;
+    document.querySelector("#POKEMON").innerHTML = playerMove4;
+    // console.log(document.querySelector("#FIGHT").innerHTML)
 }
 
 
