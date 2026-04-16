@@ -181,6 +181,9 @@
                 "name": "mega-punch",
                 "url": "/api/v2/move/5/"
             },
+            "damage":{
+                "hit_point" : 8
+            },
             "version_group_details": [
                 {
                     "level_learned_at": 0,

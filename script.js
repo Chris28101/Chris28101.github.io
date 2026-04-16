@@ -38,7 +38,7 @@ const charmander_endpoint = "./charmander.json"
 //     })
 //     .then(data => console.log(data.name))
 //     .catch(error => console.log(error));
-fetchPlayerData(bulb_endpoint)
+fetchPlayerData(charmander_endpoint)
 fetchEnemyData(bulb_endpoint)
 
 
@@ -109,17 +109,22 @@ async function playerMoves(endpoint){
     const playerMove2 = data.moves[1].move.name
     const playerMove3 = data.moves[2].move.name
     const playerMove4 = data.moves[3].move.name
-    
 
+    //render move damage
+    const move1Damage = data.moves[0].damage.hit_point
+     
 
+    // added in damage for mega punch in json just fix it 
     document.querySelector("#FIGHT").innerHTML = playerMove1;
     document.querySelector("#RUN").innerHTML = playerMove2;
     document.querySelector("#BAG").innerHTML = playerMove3;
     document.querySelector("#POKEMON").innerHTML = playerMove4;
+
+    
     // console.log(document.querySelector("#FIGHT").innerHTML)
 }
 
-
+//might have to make a battle function for player turnbased ask big L for guidence 
 
 
 
