@@ -1,5 +1,6 @@
 //cmm + s ALWAYS SAVE 
-let pokes = [];
+let pokes = {};
+let enemyPokes = {};
 
 const bulb_endpoint = "./bulbasaur.json";
 const ditto_endpoint = "./ditto.json"
@@ -69,8 +70,12 @@ async function fetchPlayerData(endpoint){
         let healthElement = document.getElementById("percent")
         healthElement.innerHTML = playerPokeHeath + "/" + playerPokeHeath
         console.log(playerPokeHeath)
+        //char move dmg 
+        let mega_punch = data.moves[0].damage.hit_point
+        pokes={playerPokeHeath,mega_punch}
+         
         
-
+        
         // const player_name = `<span class="hud-name">${player.forms[0].name}</span>`;
         //     document.querySelector("#player-hud").innerHTML = player_name;
 
@@ -97,6 +102,7 @@ async function fetchEnemyData(endpoint) {
         let healthElement = document.getElementById("enemyHP")
         healthElement.innerHTML = enemyHealth + "/" + enemyHealth
         console.log(enemyHealth)
+        enemyPokes={enemyHealth};
 }
 // playerMoves(charmander_endpoint)
 async function playerMoves(endpoint){
@@ -113,9 +119,17 @@ async function playerMoves(endpoint){
     //render move damage
     const move1Damage = data.moves[0].damage.hit_point
      
-
+    //fight btn works 
+    const fightBtn = document.querySelector("#FIGHT");
     // added in damage for mega punch in json just fix it 
-    document.querySelector("#FIGHT").innerHTML = playerMove1;
+    fightBtn.innerHTML = playerMove1;
+    fightBtn.addEventListener('click', (event)=>{
+        console.log("Fight!");
+        //change to work with pokes dmg instead of health 
+        console.log(enemyPokes.enemyHealth - pokes.mega_punch)
+         
+    })
+
     document.querySelector("#RUN").innerHTML = playerMove2;
     document.querySelector("#BAG").innerHTML = playerMove3;
     document.querySelector("#POKEMON").innerHTML = playerMove4;
