@@ -39,9 +39,10 @@ const charmander_endpoint = "./charmander.json"
 //     })
 //     .then(data => console.log(data.name))
 //     .catch(error => console.log(error));
+
 fetchPlayerData(charmander_endpoint)
 fetchEnemyData(bulb_endpoint)
-
+// ask big L what to do since there isnt endpoints here 
 
 async function fetchPlayerData(endpoint){
     
@@ -67,12 +68,12 @@ async function fetchPlayerData(endpoint){
 
         //char health
         let playerPokeHeath = data.stats[0].base_stat
-        let healthElement = document.getElementById("percent")
-        healthElement.innerHTML = playerPokeHeath + "/" + playerPokeHeath
+        const playerMaxHealth = playerPokeHeath
+        
         console.log(playerPokeHeath)
         //char move dmg 
         let mega_punch = data.moves[0].damage.hit_point
-        pokes={playerPokeHeath,mega_punch}
+        pokes={playerPokeHeath,mega_punch,imgElement,playerMaxHealth}
          
         
         
@@ -84,6 +85,7 @@ async function fetchPlayerData(endpoint){
         console.error(error);
     }
 }
+
 async function fetchEnemyData(endpoint) {
     const response = await fetch(endpoint)
 
@@ -99,12 +101,25 @@ async function fetchEnemyData(endpoint) {
         imgElement.src = enemyImg;
 
         let enemyHealth = data.stats[0].base_stat
-        let healthElement = document.getElementById("enemyHP")
-        healthElement.innerHTML = enemyHealth + "/" + enemyHealth
+        const enemyMaxhp = enemyHealth
+         
+
+         
         console.log(enemyHealth)
-        enemyPokes={enemyHealth};
+        enemyPokes={enemyHealth, enemyMaxhp};
 }
+
 // playerMoves(charmander_endpoint)
+function render() {
+
+    let enemyHealthElement = document.getElementById("enemyHP")
+    enemyHealthElement.innerHTML = enemyPokes.enemyHealth + "/" + enemyPokes.enemyMaxhp
+
+    let playerHealthElement = document.getElementById("percent")
+    playerHealthElement.innerHTML = pokes.playerPokeHeath + "/" + pokes.playerMaxHealth
+
+}
+
 async function playerMoves(endpoint){
     const response = await fetch(endpoint)
     if(!response.ok){
@@ -126,9 +141,14 @@ async function playerMoves(endpoint){
     fightBtn.addEventListener('click', (event)=>{
         console.log("Fight!");
         //change to work with pokes dmg instead of health 
-        console.log(enemyPokes.enemyHealth - pokes.mega_punch)
-         
+        enemyPokes.enemyHealth = enemyPokes.enemyHealth - pokes.mega_punch
+        render()
+        const hp = 
+        `<div id="progress">
+            <span class="outer"><span class="inner" style="width:${(enemyPokes.enemyHealth/enemyPokes.maxhp)*100}%"></span></span>
+        </div>`
     })
+    
 
     document.querySelector("#RUN").innerHTML = playerMove2;
     document.querySelector("#BAG").innerHTML = playerMove3;
@@ -137,37 +157,25 @@ async function playerMoves(endpoint){
     
     // console.log(document.querySelector("#FIGHT").innerHTML)
 }
+async function startGame() {
+    await fetchPlayerData(charmander_endpoint);
+    await fetchEnemyData(bulb_endpoint);
+     
+    
+    // Now that all the data is definitely here, we can render safely!
+    render(); 
+}
+
+// Kick off the game!
+startGame();
+
 
 //might have to make a battle function for player turnbased ask big L for guidence 
 
+//render function doesnt use async u use the rray that has alll your pokemons data 
 
 
-// function render() {
-//     //enemy
-//     const enemy = pokes[0];
-//     const name = `<span class="hud-name">${enemy.forms[0].name}</span>`;
-    
-    
-//     // const hp = `<span class="hud-hp">${enemy.stats[0].base_stat}</span>`
-//     const maxhp = enemy.stats[0].base_stat;
-//     const currenthp = enemy.currHp;
-//     const hp = `<div id="progress">
-//                     <span class="outer"><span class="inner" style="width:${(currenthp/maxhp)*100}%"></span></span>
-//                 </div>`
-//     document.querySelector("#enemy-hud").innerHTML = name + " " + hp;
-//     // document.getElementsByClassName("percent").innerHTML = enemy.currenthp + "/" + maxhp
-//     //player           --
-//     let player = pokes[1];
-//     const player_name = `<span class="hud-name">${player.forms[0].name}</span>`;
-//     document.querySelector("#player-hud").innerHTML = player_name;
 
-//     const player_img = `<span class = "img-hud">${data.sprites.back_default.img}</span>`
-//     document.querySelector("#ditto-img").innerHTML = player_img
-//     console.log(player_img)
-
-
-    
-// }
 
 // let bulbasaur_hp = hp;
 // document.getElementById("progress").innerHTML.value
@@ -176,3 +184,34 @@ async function playerMoves(endpoint){
 //     pokes[0].currHp-=10;
 //     render
 // }
+
+//render function code 
+//
+//render function
+// let bulbasaur_hp = hp;
+// document.getElementById("progress").innerHTML.value
+
+// function damage() {
+//     pokes[0].currHp-=10;
+//     render
+// }
+
+
+//enemy
+// const enemy = pokes[0];
+// const name = `<span class="hud-name">${enemy.forms[0].name}</span>`;
+
+
+// // const hp = `<span class="hud-hp">${enemy.stats[0].base_stat}</span>`
+
+
+// document.querySelector("#enemy-hud").innerHTML = name + " " + hp;
+// // document.getElementsByClassName("percent").innerHTML = enemy.currenthp + "/" + maxhp
+// //player           --
+// let player = pokes[1];
+// const player_name = `<span class="hud-name">${player.forms[0].name}</span>`;
+// document.querySelector("#player-hud").innerHTML = player_name;
+
+// const player_img = `<span class = "img-hud">${data.sprites.back_default.img}</span>`
+// document.querySelector("#ditto-img").innerHTML = player_img
+// console.log(player_img)
