@@ -277,7 +277,7 @@
                 "url": "/api/v2/move/7/"
             },
             "damage":{
-                "hit_point" : 14
+                "hit_point" : 5
             },
             "version_group_details": [
                 {
@@ -419,6 +419,9 @@
                 "name": "thunder-punch",
                 "url": "/api/v2/move/9/"
             },
+            "damage": {
+                "hit_point" : 7
+            },
             "version_group_details": [
                 {
                     "level_learned_at": 0,
@@ -522,6 +525,9 @@
             "move": {
                 "name": "scratch",
                 "url": "/api/v2/move/10/"
+            },
+            "damage":{
+                "hit_point": 3
             },
             "version_group_details": [
                 {

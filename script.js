@@ -1,4 +1,8 @@
 //cmm + s ALWAYS SAVE 
+// let gameLoop = true;
+// while(gameLoop){
+    
+// }
 let pokes = {};
 let enemyPokes = {};
 
@@ -73,7 +77,10 @@ async function fetchPlayerData(endpoint){
         console.log(playerPokeHeath)
         //char move dmg 
         let mega_punch = data.moves[0].damage.hit_point
-        pokes={playerPokeHeath,mega_punch,imgElement,playerMaxHealth}
+        let fire_punch = data.moves[1].damage.hit_point
+        let thunder_punch = data.moves[2].damage.hit_point
+        let scratch = data.moves[3].damage.hit_point
+        pokes={playerPokeHeath,mega_punch,imgElement,playerMaxHealth,fire_punch,thunder_punch,scratch}
          
         
         
@@ -102,21 +109,27 @@ async function fetchEnemyData(endpoint) {
 
         let enemyHealth = data.stats[0].base_stat
         const enemyMaxhp = enemyHealth
+        let percentageHealth = (enemyHealth / enemyMaxhp)*100;
          
 
          
         console.log(enemyHealth)
-        enemyPokes={enemyHealth, enemyMaxhp};
+        enemyPokes={enemyHealth, enemyMaxhp, percentageHealth};
 }
 
 // playerMoves(charmander_endpoint)
 function render() {
 
     let enemyHealthElement = document.getElementById("enemyHP")
+    let enemyHPBar = document.getElementById("enemyHPBar")
     enemyHealthElement.innerHTML = enemyPokes.enemyHealth + "/" + enemyPokes.enemyMaxhp
+    enemyHPBar.style=`width:${enemyPokes.percentageHealth}%;`
 
     let playerHealthElement = document.getElementById("percent")
     playerHealthElement.innerHTML = pokes.playerPokeHeath + "/" + pokes.playerMaxHealth
+//     const enemyHpBar = `<div id="progress">
+//     <span class="outer"><span class="inner" style="width:${(enemyPokes.enemyHealth/enemyPokes.enemyMaxhp)*100}%"></span></span>
+// </div>`
 
 }
 
@@ -130,24 +143,70 @@ async function playerMoves(endpoint){
     const playerMove2 = data.moves[1].move.name
     const playerMove3 = data.moves[2].move.name
     const playerMove4 = data.moves[3].move.name
+    console.log(playerMove1)
+    console.log(playerMove2)
+    console.log(playerMove3)
+    console.log(playerMove4)
 
     //render move damage
-    const move1Damage = data.moves[0].damage.hit_point
-     
-    //fight btn works 
+    const move1Damage = pokes.mega_punch
+    const move2Damage = pokes.fire_punch
+    const move3Damage = pokes.thunder_punch
+    const move4Damage = pokes.scratch
+    console.log(move4Damage)
+    //grabs the id fir the buttons and save it 
     const fightBtn = document.querySelector("#FIGHT");
-    // added in damage for mega punch in json just fix it 
+    const runBtn = document.querySelector("#RUN");
+    const bagBtn = document.querySelector("#BAG");
+    const pokeBtn = document.querySelector("#POKEMON");
+    // grabs inner html for button
     fightBtn.innerHTML = playerMove1;
-    fightBtn.addEventListener('click', (event)=>{
-        console.log("Fight!");
-        //change to work with pokes dmg instead of health 
-        enemyPokes.enemyHealth = enemyPokes.enemyHealth - pokes.mega_punch
+    runBtn.innerHTML = playerMove4;
+    bagBtn.innerHTML = playerMove2;
+    pokeBtn.innerHTML = playerMove3
+    //fight button move one button 
+    const newFightBtn = fightBtn.cloneNode(true);
+    fightBtn.parentNode.replaceChild(newFightBtn, fightBtn);
+    
+    //run button move "2" button 
+    const newRunBtn = runBtn.cloneNode(true)
+    runBtn.parentNode.replaceChild(newRunBtn,runBtn)
+
+    const newBagBtn = bagBtn.cloneNode(true)
+    bagBtn.parentNode.replaceChild(newBagBtn,bagBtn)
+
+    const newPokeBtn = pokeBtn.cloneNode(true)
+    pokeBtn.parentNode.replaceChild(newPokeBtn,pokeBtn)
+    // Now add the listener to the "clean" button
+    newFightBtn.addEventListener('click', (event) => {
+        enemyPokes.enemyHealth -= pokes.mega_punch;
+        enemyPokes.percentageHealth = (enemyPokes.enemyHealth / enemyPokes.enemyMaxhp)*100;
+        render();
+    });
+    newRunBtn.addEventListener('click', (event) => {
+        enemyPokes.enemyHealth -= pokes.fire_punch;
+        enemyPokes.percentageHealth = (enemyPokes.enemyHealth / enemyPokes.enemyMaxhp)*100;
+
+        render();
+    });
+    newBagBtn.addEventListener('click', (event) => {
+        enemyPokes.enemyHealth -= pokes.thunder_punch
+        enemyPokes.percentageHealth = (enemyPokes.enemyHealth / enemyPokes.enemyMaxhp)*100;
         render()
-        const hp = 
-        `<div id="progress">
-            <span class="outer"><span class="inner" style="width:${(enemyPokes.enemyHealth/enemyPokes.maxhp)*100}%"></span></span>
-        </div>`
     })
+    newPokeBtn.addEventListener('click',(event) => {
+        enemyPokes.enemyHealth -= pokes.scratch
+        enemyPokes.percentageHealth = (enemyPokes.enemyHealth / enemyPokes.enemyMaxhp)*100;
+        render()
+    } )
+   //simplifed bigL version 
+    // function changeHealth(p, hp) {
+    //     p.health += hp;
+    //     p.percentageHealth = (p.health / p.maxHealth)*100;
+
+    // }
+    
+    
     
 
     document.querySelector("#RUN").innerHTML = playerMove2;
@@ -172,46 +231,6 @@ startGame();
 
 //might have to make a battle function for player turnbased ask big L for guidence 
 
-//render function doesnt use async u use the rray that has alll your pokemons data 
-
-
-
-
-// let bulbasaur_hp = hp;
-// document.getElementById("progress").innerHTML.value
-
-// function damage() {
-//     pokes[0].currHp-=10;
-//     render
-// }
-
-//render function code 
-//
-//render function
-// let bulbasaur_hp = hp;
-// document.getElementById("progress").innerHTML.value
-
-// function damage() {
-//     pokes[0].currHp-=10;
-//     render
-// }
-
-
-//enemy
-// const enemy = pokes[0];
-// const name = `<span class="hud-name">${enemy.forms[0].name}</span>`;
-
-
-// // const hp = `<span class="hud-hp">${enemy.stats[0].base_stat}</span>`
-
-
-// document.querySelector("#enemy-hud").innerHTML = name + " " + hp;
-// // document.getElementsByClassName("percent").innerHTML = enemy.currenthp + "/" + maxhp
-// //player           --
-// let player = pokes[1];
-// const player_name = `<span class="hud-name">${player.forms[0].name}</span>`;
-// document.querySelector("#player-hud").innerHTML = player_name;
-
-// const player_img = `<span class = "img-hud">${data.sprites.back_default.img}</span>`
-// document.querySelector("#ditto-img").innerHTML = player_img
-// console.log(player_img)
+ 
+     
+ 
