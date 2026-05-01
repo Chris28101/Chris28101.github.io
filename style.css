@@ -57,7 +57,7 @@ main{
 width: 50%;
 height: 100px;
 }
-.fight-ui{
+#fight-ui{
     border: 3px solid rgb(245, 193, 6);
     border-radius: 16px;
     justify-content: space-around;

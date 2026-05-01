@@ -148,12 +148,18 @@ async function playerMoves(endpoint){
     console.log(playerMove3)
     console.log(playerMove4)
 
+    
+    
     //render move damage
     const move1Damage = pokes.mega_punch
     const move2Damage = pokes.fire_punch
     const move3Damage = pokes.thunder_punch
     const move4Damage = pokes.scratch
     console.log(move4Damage)
+    // move choice displayed
+    // let moveDisplay = document.querySelector("#fight-ui")
+    
+    // console.log(moveDisplay)
     //grabs the id fir the buttons and save it 
     const fightBtn = document.querySelector("#FIGHT");
     const runBtn = document.querySelector("#RUN");
@@ -181,22 +187,27 @@ async function playerMoves(endpoint){
     newFightBtn.addEventListener('click', (event) => {
         enemyPokes.enemyHealth -= pokes.mega_punch;
         enemyPokes.percentageHealth = (enemyPokes.enemyHealth / enemyPokes.enemyMaxhp)*100;
+        document.getElementById("fight-ui").textContent =("You used "+ playerMove1 + " and did " + move1Damage + " damage")
         render();
     });
     newRunBtn.addEventListener('click', (event) => {
         enemyPokes.enemyHealth -= pokes.fire_punch;
         enemyPokes.percentageHealth = (enemyPokes.enemyHealth / enemyPokes.enemyMaxhp)*100;
-
+        document.getElementById("fight-ui").textContent =("You used "+ playerMove2 + " and did " + move2Damage + " damage")
+        console.log(pokes.fire_punch)
         render();
     });
     newBagBtn.addEventListener('click', (event) => {
         enemyPokes.enemyHealth -= pokes.thunder_punch
         enemyPokes.percentageHealth = (enemyPokes.enemyHealth / enemyPokes.enemyMaxhp)*100;
+        document.getElementById("fight-ui").textContent =("You used "+ playerMove3 + " and did " + move3Damage + " damage")
+        console.log(pokes.thunder_punch)
         render()
     })
     newPokeBtn.addEventListener('click',(event) => {
         enemyPokes.enemyHealth -= pokes.scratch
         enemyPokes.percentageHealth = (enemyPokes.enemyHealth / enemyPokes.enemyMaxhp)*100;
+        document.getElementById("fight-ui").textContent =("You used "+ playerMove4 + " and did " + move4Damage + " damage")
         render()
     } )
    //simplifed bigL version 
