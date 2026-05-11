@@ -5,7 +5,8 @@
 // }
 let pokes = {};
 let enemyPokes = {};
-
+let isPlayerMove = true
+let isEnemyMove = false
 const bulb_endpoint = "./bulbasaur.json";
 const ditto_endpoint = "./ditto.json"
 const char_endpoint = "./charizard.json"
@@ -80,7 +81,11 @@ async function fetchPlayerData(endpoint){
         let fire_punch = data.moves[1].damage.hit_point
         let thunder_punch = data.moves[2].damage.hit_point
         let scratch = data.moves[3].damage.hit_point
-        pokes={playerPokeHeath,mega_punch,imgElement,playerMaxHealth,fire_punch,thunder_punch,scratch}
+
+        //
+        //percentage
+        let playerPercentageHealth = (playerPokeHeath / playerMaxHealth)*100; 
+        pokes={playerPokeHeath,mega_punch,imgElement,playerMaxHealth,fire_punch,thunder_punch,scratch,playerPercentageHealth}
          
         
         
@@ -119,22 +124,43 @@ async function fetchEnemyData(endpoint) {
 
 // playerMoves(charmander_endpoint)
 function render() {
+    // 1. If data hasn't loaded yet, don't run the math
+    if (!enemyPokes.enemyMaxhp || !pokes.playerMaxHealth) return;
 
-    let enemyHealthElement = document.getElementById("enemyHP")
-    let enemyHPBar = document.getElementById("enemyHPBar")
-    enemyHealthElement.innerHTML = enemyPokes.enemyHealth + "/" + enemyPokes.enemyMaxhp
-    enemyHPBar.style=`width:${enemyPokes.percentageHealth}%;`
+    // --- Enemy HUD ---
+    const enemyHealthElement = document.getElementById("enemyHP");
+    const enemyHPBar = document.getElementById("enemyHPBar");
+    
+    const currentEnemyHP = Math.max(0, enemyPokes.enemyHealth);
+    const enemyPercent = (currentEnemyHP / enemyPokes.enemyMaxhp) * 100;
 
-    let playerHealthElement = document.getElementById("percent")
-    playerHealthElement.innerHTML = pokes.playerPokeHeath + "/" + pokes.playerMaxHealth
-    if(enemyPokes.enemyHealth <= 0){
-        alert("game over")
-        location.reload()
+    enemyHealthElement.innerHTML = `${currentEnemyHP} / ${enemyPokes.enemyMaxhp}`;
+    //safty check for bar
+    if (enemyHPBar) {
+        enemyHPBar.style.width = enemyPercent + "%";
     }
-//     const enemyHpBar = `<div id="progress">
-//     <span class="outer"><span class="inner" style="width:${(enemyPokes.enemyHealth/enemyPokes.enemyMaxhp)*100}%"></span></span>
-// </div>`
 
+    // --- Player HUD ---
+    const playerHealthElement = document.getElementById("percent");
+    const playerHPBar = document.getElementById("playerHPBar");
+    
+    const currentPlayerHP = Math.max(0, pokes.playerPokeHeath);
+    const playerPercent = (currentPlayerHP / pokes.playerMaxHealth) * 100;
+
+    playerHealthElement.innerHTML = `${currentPlayerHP} / ${pokes.playerMaxHealth}`;
+    playerHPBar.style.width = playerPercent + "%"
+    if (playerHPBar) {
+        playerHPBar.style.width = playerPercent + "%";
+    }
+
+    // --- Win/Loss Check ---
+    if (enemyPokes.enemyHealth <= 0) {
+        alert("Enemy fainted! You win!");
+        location.reload();
+    } else if (pokes.playerPokeHeath <= 0) {
+        alert("You fainted... Game Over.");
+        location.reload();
+    }
 }
 
 async function playerMoves(endpoint){
@@ -188,31 +214,52 @@ async function playerMoves(endpoint){
     const newPokeBtn = pokeBtn.cloneNode(true)
     pokeBtn.parentNode.replaceChild(newPokeBtn,pokeBtn)
     // Now add the listener to the "clean" button
+
     newFightBtn.addEventListener('click', (event) => {
+         
         enemyPokes.enemyHealth -= pokes.mega_punch;
         enemyPokes.percentageHealth = (enemyPokes.enemyHealth / enemyPokes.enemyMaxhp)*100;
         document.getElementById("fight-ui").textContent =("You used "+ playerMove1 + " and did " + move1Damage + " damage")
+        
         render();
+        
+        if(enemyPokes.enemyHealth > 0){
+            isPlayerMove = false
+            enemyMoves()
+        }
     });
+
     newRunBtn.addEventListener('click', (event) => {
         enemyPokes.enemyHealth -= pokes.fire_punch;
         enemyPokes.percentageHealth = (enemyPokes.enemyHealth / enemyPokes.enemyMaxhp)*100;
         document.getElementById("fight-ui").textContent =("You used "+ playerMove2 + " and did " + move2Damage + " damage")
         console.log(pokes.fire_punch)
         render();
+        if(enemyPokes.enemyHealth > 0){
+            isPlayerMove = false
+            enemyMoves()
+        }
     });
     newBagBtn.addEventListener('click', (event) => {
         enemyPokes.enemyHealth -= pokes.thunder_punch
         enemyPokes.percentageHealth = (enemyPokes.enemyHealth / enemyPokes.enemyMaxhp)*100;
         document.getElementById("fight-ui").textContent =("You used "+ playerMove3 + " and did " + move3Damage + " damage")
         console.log(pokes.thunder_punch)
-        render()
+        render();
+        if(enemyPokes.enemyHealth > 0){
+            isPlayerMove = false
+            enemyMoves()
+        }
     })
     newPokeBtn.addEventListener('click',(event) => {
         enemyPokes.enemyHealth -= pokes.scratch
         enemyPokes.percentageHealth = (enemyPokes.enemyHealth / enemyPokes.enemyMaxhp)*100;
         document.getElementById("fight-ui").textContent =("You used "+ playerMove4 + " and did " + move4Damage + " damage")
-        render()
+        render();
+        if(enemyPokes.enemyHealth > 0){
+            isPlayerMove = false
+            enemyMoves()
+        }
     } )
    //simplifed bigL version 
     // function changeHealth(p, hp) {
@@ -230,6 +277,26 @@ async function playerMoves(endpoint){
 
     
     // console.log(document.querySelector("#FIGHT").innerHTML)
+}
+function enemyMoves(){
+    setTimeout(()=>{
+        const enemyDmg = 10
+
+        pokes.playerPokeHeath -=enemyDmg
+        //resets players hpbar to when u did dmg to it 
+        pokes.playerPercentageHealth = (pokes.playerPokeHeath / pokes.playerPokeHeath)*100;
+        document.getElementById("fight-ui").textContent = "Enemey did "+ enemyDmg
+        render()
+        
+        if(pokes.playerPokeHeath > 0){
+            setTimeout(()=>{
+                isPlayerMove = true
+                document.getElementById("fight-ui").textContent = "What will you do?";
+            },1000)
+        }
+    },1500)
+    
+
 }
 async function startGame() {
     await fetchPlayerData(charmander_endpoint);

@@ -143,3 +143,9 @@ footer{
     margin-left: 2rem;
     margin-top: 2rem;
 }
+#percent, #enemyHP {
+    white-space: nowrap; /* Forces text to stay on one line */
+    display: block;
+    min-width: 80px; 
+    text-align: center;
+}
