@@ -127,6 +127,10 @@ function render() {
 
     let playerHealthElement = document.getElementById("percent")
     playerHealthElement.innerHTML = pokes.playerPokeHeath + "/" + pokes.playerMaxHealth
+    if(enemyPokes.enemyHealth <= 0){
+        alert("game over")
+        location.reload()
+    }
 //     const enemyHpBar = `<div id="progress">
 //     <span class="outer"><span class="inner" style="width:${(enemyPokes.enemyHealth/enemyPokes.enemyMaxhp)*100}%"></span></span>
 // </div>`
