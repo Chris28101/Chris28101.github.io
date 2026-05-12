@@ -3,8 +3,12 @@
 // while(gameLoop){
     
 // }
+
 let pokes = {};
 let enemyPokes = {};
+let enemyMovesNames = {}
+let enemyHitPoint = {}
+let enemyMovesDmg = []
 let isPlayerMove = true
 let isEnemyMove = false
 const bulb_endpoint = "./bulbasaur.json";
@@ -120,6 +124,28 @@ async function fetchEnemyData(endpoint) {
          
         console.log(enemyHealth)
         enemyPokes={enemyHealth, enemyMaxhp, percentageHealth};
+        
+        //enemys move names
+        const enemyMove1 = data.moves[0].move.name
+        const enemyMove2 = data.moves[1].move.name
+        const enemyMove3 = data.moves[2].move.name
+        const enemyMove4 = data.moves[3].move.name
+        enemyMovesNames = {enemyMove1,enemyMove2,enemyMove3,enemyMove4}
+        //enemy move dmgs 
+        let enemyDmg1 = data.moves[0].damage.hit_point
+        let enemyDmg2 = data.moves[1].damage.hit_point
+        let enemyDmg3 = data.moves[2].damage.hit_point
+        let enemyDmg4 = data.moves[3].damage.hit_point
+        enemyHitPoint = {enemyDmg1,enemyDmg2,enemyDmg3,enemyDmg4}
+
+        enemyMovesDmg = [
+            {name: enemyMove1 , damage: enemyDmg1},
+            {name: enemyMove2 , damage: enemyDmg2},
+            {name: enemyMove3 , damage: enemyDmg3},
+            {name: enemyMove4 , damage: enemyDmg4},
+        ]
+        console.log("array right after assignment:", enemyMovesDmg) // add this
+ 
 }
 
 // playerMoves(charmander_endpoint)
@@ -214,33 +240,56 @@ async function playerMoves(endpoint){
     const newPokeBtn = pokeBtn.cloneNode(true)
     pokeBtn.parentNode.replaceChild(newPokeBtn,pokeBtn)
     // Now add the listener to the "clean" button
-
+ 
     newFightBtn.addEventListener('click', (event) => {
-         
+        
+        if(!isPlayerMove ){
+            return
+        }
+             
+        isPlayerMove = false
+
         enemyPokes.enemyHealth -= pokes.mega_punch;
         enemyPokes.percentageHealth = (enemyPokes.enemyHealth / enemyPokes.enemyMaxhp)*100;
         document.getElementById("fight-ui").textContent =("You used "+ playerMove1 + " and did " + move1Damage + " damage")
         
         render();
         
-        if(enemyPokes.enemyHealth > 0){
-            isPlayerMove = false
-            enemyMoves()
-        }
+    if(enemyPokes.enemyHealth > 0){
+        isPlayerMove = false
+        enemyTurns()
+    }
     });
 
     newRunBtn.addEventListener('click', (event) => {
+        //stops you fron battleing not ur turn
+        if(!isPlayerMove ){
+            return
+        }
+             
+        isPlayerMove = false
+
         enemyPokes.enemyHealth -= pokes.fire_punch;
+
         enemyPokes.percentageHealth = (enemyPokes.enemyHealth / enemyPokes.enemyMaxhp)*100;
+
         document.getElementById("fight-ui").textContent =("You used "+ playerMove2 + " and did " + move2Damage + " damage")
+
         console.log(pokes.fire_punch)
         render();
+
         if(enemyPokes.enemyHealth > 0){
             isPlayerMove = false
-            enemyMoves()
+            enemyTurns()
         }
     });
     newBagBtn.addEventListener('click', (event) => {
+        //stops you fron battleing not ur turn
+        if(!isPlayerMove ){
+            return
+        }
+                     
+        isPlayerMove = false
         enemyPokes.enemyHealth -= pokes.thunder_punch
         enemyPokes.percentageHealth = (enemyPokes.enemyHealth / enemyPokes.enemyMaxhp)*100;
         document.getElementById("fight-ui").textContent =("You used "+ playerMove3 + " and did " + move3Damage + " damage")
@@ -248,17 +297,24 @@ async function playerMoves(endpoint){
         render();
         if(enemyPokes.enemyHealth > 0){
             isPlayerMove = false
-            enemyMoves()
+            enemyTurns()
         }
     })
     newPokeBtn.addEventListener('click',(event) => {
+        //stops you fron battleing not ur turn
+        if(!isPlayerMove ){
+            return
+        }
+                     
+        isPlayerMove = false
+
         enemyPokes.enemyHealth -= pokes.scratch
         enemyPokes.percentageHealth = (enemyPokes.enemyHealth / enemyPokes.enemyMaxhp)*100;
         document.getElementById("fight-ui").textContent =("You used "+ playerMove4 + " and did " + move4Damage + " damage")
         render();
         if(enemyPokes.enemyHealth > 0){
             isPlayerMove = false
-            enemyMoves()
+            enemyTurns()
         }
     } )
    //simplifed bigL version 
@@ -278,14 +334,16 @@ async function playerMoves(endpoint){
     
     // console.log(document.querySelector("#FIGHT").innerHTML)
 }
-function enemyMoves(){
+function enemyTurns(){
     setTimeout(()=>{
-        const enemyDmg = 10
+        //random move
+        randMove = enemyMovesDmg[Math.floor(Math.random() * enemyMovesDmg.length)]
+        console.log(randMove.name, randMove.damage)
 
-        pokes.playerPokeHeath -=enemyDmg
+        pokes.playerPokeHeath -= randMove.damage
         //resets players hpbar to when u did dmg to it 
         pokes.playerPercentageHealth = (pokes.playerPokeHeath / pokes.playerPokeHeath)*100;
-        document.getElementById("fight-ui").textContent = "Enemey did "+ enemyDmg
+        document.getElementById("fight-ui").textContent = `Enemey used ${randMove.name } and did ${randMove.damage} damage`
         render()
         
         if(pokes.playerPokeHeath > 0){

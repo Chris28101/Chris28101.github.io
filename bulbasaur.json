@@ -181,6 +181,9 @@
               "name": "razor-wind",
               "url": "/api/v2/move/13/"
           },
+          "damage":{
+                "hit_point": 10
+          },
           "version_group_details": [
               {
                   "level_learned_at": 0,
@@ -212,6 +215,9 @@
           "move": {
               "name": "swords-dance",
               "url": "/api/v2/move/14/"
+          },
+          "damage":{
+                "hit_point":0
           },
           "version_group_details": [
               {
@@ -436,6 +442,9 @@
           "move": {
               "name": "cut",
               "url": "/api/v2/move/15/"
+          },
+          "damage":{
+                "hit_point":7
           },
           "version_group_details": [
               {
@@ -672,6 +681,9 @@
           "move": {
               "name": "bind",
               "url": "/api/v2/move/20/"
+          },
+          "damage":{
+                "hit_point":4
           },
           "version_group_details": [
               {
