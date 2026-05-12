@@ -8,46 +8,18 @@ let pokes = {};
 let enemyPokes = {};
 let enemyMovesNames = {}
 let enemyHitPoint = {}
+//array of whole pokes moves object
 let enemyMovesDmg = []
+
+let pokesMoveNames = {}
+let pokesHitpoint = {}
 let isPlayerMove = true
 let isEnemyMove = false
 const bulb_endpoint = "./bulbasaur.json";
 const ditto_endpoint = "./ditto.json"
 const char_endpoint = "./charizard.json"
 const charmander_endpoint = "./charmander.json"
-// fetch(e_endpoint).then(
-//     response => response.json().then(data=>{
-//         data.currHp = data.stats[0].base_stat
-//         pokes.push(data);
-        
-//         // render();
-//     })
 
-// ).then( _ => {
-//     fetch(p_endpoint).then(
-//         response => response.json().then(data=>{
-//             data.name = data.forms[0].name
-
-//             data.img = data.sprites.back_default.img
-
-
-
-//             pokes.push(data)
-//             render()
-            
-//         })
-//     )
-// })
-
-// fetch(e_endpoint)
-//     .then(response => {
-//         if(!response.ok){
-//             throw new Error("Could not fetch resource")
-//         }
-//         return response.json();
-//     })
-//     .then(data => console.log(data.name))
-//     .catch(error => console.log(error));
 
 fetchPlayerData(charmander_endpoint)
 fetchEnemyData(bulb_endpoint)
@@ -80,16 +52,27 @@ async function fetchPlayerData(endpoint){
         const playerMaxHealth = playerPokeHeath
         
         console.log(playerPokeHeath)
-        //char move dmg 
-        let mega_punch = data.moves[0].damage.hit_point
-        let fire_punch = data.moves[1].damage.hit_point
-        let thunder_punch = data.moves[2].damage.hit_point
-        let scratch = data.moves[3].damage.hit_point
+        //player move name 
+        const playerMove1 = data.moves[0].move.name
+        const playerMove2 = data.moves[1].move.name
+        const playerMove3 = data.moves[2].move.name
+        const playerMove4 = data.moves[3].move.name
+        console.log(playerMove1)
+        console.log(playerMove2)
+        console.log(playerMove3)
+        console.log(playerMove4)
+        //player move hitpoint 
 
-        //
+        let playerDmg1 = data.moves[0].damage.hit_point
+        let playerDmg2 = data.moves[1].damage.hit_point
+        let playerDmg3 = data.moves[2].damage.hit_point
+        let playerDmg4 = data.moves[3].damage.hit_point
+        
         //percentage
         let playerPercentageHealth = (playerPokeHeath / playerMaxHealth)*100; 
-        pokes={playerPokeHeath,mega_punch,imgElement,playerMaxHealth,fire_punch,thunder_punch,scratch,playerPercentageHealth}
+        pokes={playerPokeHeath ,imgElement,playerMaxHealth ,playerPercentageHealth}
+        pokesMoveNames = {playerMove1,playerMove2,playerMove3,playerMove4}
+        pokesHitpoint = {playerDmg1,playerDmg2,playerDmg3,playerDmg4}
          
         
         
@@ -189,29 +172,17 @@ function render() {
     }
 }
 
-async function playerMoves(endpoint){
-    const response = await fetch(endpoint)
-    if(!response.ok){
-        throw new Error("could not fetch this resource");
-    }
-    const data = await response.json();
-    const playerMove1 = data.moves[0].move.name
-    const playerMove2 = data.moves[1].move.name
-    const playerMove3 = data.moves[2].move.name
-    const playerMove4 = data.moves[3].move.name
-    console.log(playerMove1)
-    console.log(playerMove2)
-    console.log(playerMove3)
-    console.log(playerMove4)
-
+function playerMoves(){
+ 
+    
     
     
     //render move damage
-    const move1Damage = pokes.mega_punch
-    const move2Damage = pokes.fire_punch
-    const move3Damage = pokes.thunder_punch
-    const move4Damage = pokes.scratch
-    console.log(move4Damage)
+    // const move1Damage = pokes.mega_punch
+    // const move2Damage = pokes.fire_punch
+    // const move3Damage = pokes.thunder_punch
+    // const move4Damage = pokes.scratch
+    // console.log(move4Damage)
     // move choice displayed
     // let moveDisplay = document.querySelector("#fight-ui")
     
@@ -222,10 +193,10 @@ async function playerMoves(endpoint){
     const bagBtn = document.querySelector("#BAG");
     const pokeBtn = document.querySelector("#POKEMON");
     // grabs inner html for button
-    fightBtn.innerHTML = playerMove1;
-    runBtn.innerHTML = playerMove4;
-    bagBtn.innerHTML = playerMove2;
-    pokeBtn.innerHTML = playerMove3
+    fightBtn.innerHTML = pokesMoveNames.playerMove1;
+    runBtn.innerHTML = pokesMoveNames.playerMove2;
+    bagBtn.innerHTML = pokesMoveNames.playerMove3;
+    pokeBtn.innerHTML = pokesMoveNames.playerMove4;
     //fight button move one button 
     const newFightBtn = fightBtn.cloneNode(true);
     fightBtn.parentNode.replaceChild(newFightBtn, fightBtn);
@@ -249,9 +220,9 @@ async function playerMoves(endpoint){
              
         isPlayerMove = false
 
-        enemyPokes.enemyHealth -= pokes.mega_punch;
+        enemyPokes.enemyHealth -= pokesHitpoint.playerDmg1;
         enemyPokes.percentageHealth = (enemyPokes.enemyHealth / enemyPokes.enemyMaxhp)*100;
-        document.getElementById("fight-ui").textContent =("You used "+ playerMove1 + " and did " + move1Damage + " damage")
+        document.getElementById("fight-ui").textContent =("You used "+ pokesMoveNames.playerMove1 + " and did " + pokesHitpoint.playerDmg1 + " damage")
         
         render();
         
@@ -269,13 +240,11 @@ async function playerMoves(endpoint){
              
         isPlayerMove = false
 
-        enemyPokes.enemyHealth -= pokes.fire_punch;
-
+        enemyPokes.enemyHealth -= pokesHitpoint.playerDmg2;
         enemyPokes.percentageHealth = (enemyPokes.enemyHealth / enemyPokes.enemyMaxhp)*100;
+        document.getElementById("fight-ui").textContent =("You used "+ pokesMoveNames.playerMove2 + " and did " + pokesHitpoint.playerDmg2 + " damage")
 
-        document.getElementById("fight-ui").textContent =("You used "+ playerMove2 + " and did " + move2Damage + " damage")
-
-        console.log(pokes.fire_punch)
+ 
         render();
 
         if(enemyPokes.enemyHealth > 0){
@@ -290,10 +259,9 @@ async function playerMoves(endpoint){
         }
                      
         isPlayerMove = false
-        enemyPokes.enemyHealth -= pokes.thunder_punch
+        enemyPokes.enemyHealth -= pokesHitpoint.playerDmg3;
         enemyPokes.percentageHealth = (enemyPokes.enemyHealth / enemyPokes.enemyMaxhp)*100;
-        document.getElementById("fight-ui").textContent =("You used "+ playerMove3 + " and did " + move3Damage + " damage")
-        console.log(pokes.thunder_punch)
+        document.getElementById("fight-ui").textContent =("You used "+ pokesMoveNames.playerMove3 + " and did " + pokesHitpoint.playerDmg3 + " damage")
         render();
         if(enemyPokes.enemyHealth > 0){
             isPlayerMove = false
@@ -308,9 +276,9 @@ async function playerMoves(endpoint){
                      
         isPlayerMove = false
 
-        enemyPokes.enemyHealth -= pokes.scratch
+        enemyPokes.enemyHealth -= pokesHitpoint.playerDmg4;
         enemyPokes.percentageHealth = (enemyPokes.enemyHealth / enemyPokes.enemyMaxhp)*100;
-        document.getElementById("fight-ui").textContent =("You used "+ playerMove4 + " and did " + move4Damage + " damage")
+        document.getElementById("fight-ui").textContent =("You used "+ pokesMoveNames.playerMove4 + " and did " + pokesHitpoint.playerDmg4 + " damage")
         render();
         if(enemyPokes.enemyHealth > 0){
             isPlayerMove = false
@@ -327,9 +295,9 @@ async function playerMoves(endpoint){
     
     
 
-    document.querySelector("#RUN").innerHTML = playerMove2;
-    document.querySelector("#BAG").innerHTML = playerMove3;
-    document.querySelector("#POKEMON").innerHTML = playerMove4;
+    // document.querySelector("#RUN").innerHTML = playerMove2;
+    // document.querySelector("#BAG").innerHTML = playerMove3;
+    // document.querySelector("#POKEMON").innerHTML = playerMove4;
 
     
     // console.log(document.querySelector("#FIGHT").innerHTML)
@@ -342,7 +310,7 @@ function enemyTurns(){
 
         pokes.playerPokeHeath -= randMove.damage
         //resets players hpbar to when u did dmg to it 
-        pokes.playerPercentageHealth = (pokes.playerPokeHeath / pokes.playerPokeHeath)*100;
+        pokes.playerPercentageHealth = (pokes.playerPokeHeath / pokes.playerMaxHealth)*100;
         document.getElementById("fight-ui").textContent = `Enemey used ${randMove.name } and did ${randMove.damage} damage`
         render()
         
