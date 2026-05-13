@@ -24,7 +24,14 @@ const charmander_endpoint = "./charmander.json"
 fetchPlayerData(charmander_endpoint)
 fetchEnemyData(bulb_endpoint)
 // ask big L what to do since there isnt endpoints here 
-
+function closeWindow(){
+    closeBtn = document.querySelector("#RUN")
+    closeBtn.addEventListener('click',(event)=>{
+        alert("Closing the window now")
+        window.close()
+    })
+}
+closeWindow()
 async function fetchPlayerData(endpoint){
     
     try{
@@ -170,6 +177,7 @@ function render() {
         alert("You fainted... Game Over.");
         location.reload();
     }
+
 }
 
 function playerMoves(){
@@ -302,6 +310,7 @@ function playerMoves(){
     
     // console.log(document.querySelector("#FIGHT").innerHTML)
 }
+
 function enemyTurns(){
     setTimeout(()=>{
         //random move
