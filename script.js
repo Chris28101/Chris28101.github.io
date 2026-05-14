@@ -14,6 +14,7 @@ let pokesMoveNames = {}
 let pokesHitpoint = {}
 let isPlayerMove = true
 let isEnemyMove = false
+let battleStarted = false
 const bulb_endpoint = "./bulbasaur.json";
 const ditto_endpoint = "./ditto.json"
 const char_endpoint = "./charizard.json"
@@ -23,14 +24,20 @@ const charmander_endpoint = "./charmander.json"
 fetchPlayerData(charmander_endpoint)
 fetchEnemyData(bulb_endpoint)
 // ask big L what to do since there isnt endpoints here 
-function closeWindow(){
-    closeBtn = document.querySelector("#RUN")
-    closeBtn.addEventListener('click',(event)=>{
-        alert("Closing the window now")
-        window.close()
+// function closeWindow(){
+//     closeBtn = document.querySelector("#RUN")
+//     closeBtn.addEventListener('click',(event)=>{
+        
+//     })
+// }
+function openAgain(){
+    againBtn = document.querySelector("#again")
+    againBtn.addEventListener('click', (event)=>{
+    window.location.href = "index.html"
     })
+
 }
-closeWindow()
+
 async function fetchPlayerData(endpoint){
     
     try{
@@ -214,7 +221,7 @@ function playerMoves(){
         }
              
         isPlayerMove = false
-
+        battleStarted = true  
         enemyPokes.enemyHealth -= pokesHitpoint.playerDmg1;
         enemyPokes.percentageHealth = (enemyPokes.enemyHealth / enemyPokes.enemyMaxhp)*100;
         document.getElementById("fight-ui").textContent =("You used "+ pokesMoveNames.playerMove1 + " and did " + pokesHitpoint.playerDmg1 + " damage")
@@ -229,23 +236,32 @@ function playerMoves(){
 
     newRunBtn.addEventListener('click', (event) => {
         //stops you fron battleing not ur turn
-        if(!isPlayerMove ){
-            return
+        if(!battleStarted){
+            alert("Closing the window now")
+            window.location.href = "ran-away.html"
+            
         }
-             
-        isPlayerMove = false
-
-        enemyPokes.enemyHealth -= pokesHitpoint.playerDmg2;
-        enemyPokes.percentageHealth = (enemyPokes.enemyHealth / enemyPokes.enemyMaxhp)*100;
-        document.getElementById("fight-ui").textContent =("You used "+ pokesMoveNames.playerMove2 + " and did " + pokesHitpoint.playerDmg2 + " damage")
-
- 
-        render();
-
-        if(enemyPokes.enemyHealth > 0){
+        else{
+            battleStarted = true
+            if(!isPlayerMove ){
+                return
+            }
+                 
             isPlayerMove = false
-            enemyTurns()
+    
+            enemyPokes.enemyHealth -= pokesHitpoint.playerDmg2;
+            enemyPokes.percentageHealth = (enemyPokes.enemyHealth / enemyPokes.enemyMaxhp)*100;
+            document.getElementById("fight-ui").textContent =("You used "+ pokesMoveNames.playerMove2 + " and did " + pokesHitpoint.playerDmg2 + " damage")
+    
+            render();
+    
+            if(enemyPokes.enemyHealth > 0){
+                isPlayerMove = false
+                enemyTurns()
+            }
         }
+
+        
     });
     newBagBtn.addEventListener('click', (event) => {
         //stops you fron battleing not ur turn
@@ -317,7 +333,14 @@ async function startGame() {
      
     
     // Now that all the data is definitely here, we can render safely!
-    render(); 
+    render();
+    //added this in the start function to be able to switch tabs 
+    document.querySelector("#RUN").addEventListener('click', () => {
+        if(!battleStarted){
+            alert("You ran away!")
+            window.location.href = "ran-away.html"
+        }
+    })
 }
 
 // Kick off the game!
