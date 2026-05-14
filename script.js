@@ -10,7 +10,6 @@ let enemyMovesNames = {}
 let enemyHitPoint = {}
 //array of whole pokes moves object
 let enemyMovesDmg = []
-
 let pokesMoveNames = {}
 let pokesHitpoint = {}
 let isPlayerMove = true
@@ -183,18 +182,6 @@ function render() {
 function playerMoves(){
  
     
-    
-    
-    //render move damage
-    // const move1Damage = pokes.mega_punch
-    // const move2Damage = pokes.fire_punch
-    // const move3Damage = pokes.thunder_punch
-    // const move4Damage = pokes.scratch
-    // console.log(move4Damage)
-    // move choice displayed
-    // let moveDisplay = document.querySelector("#fight-ui")
-    
-    // console.log(moveDisplay)
     //grabs the id fir the buttons and save it 
     const fightBtn = document.querySelector("#FIGHT");
     const runBtn = document.querySelector("#RUN");
@@ -299,16 +286,7 @@ function playerMoves(){
     //     p.percentageHealth = (p.health / p.maxHealth)*100;
 
     // }
-    
-    
-    
 
-    // document.querySelector("#RUN").innerHTML = playerMove2;
-    // document.querySelector("#BAG").innerHTML = playerMove3;
-    // document.querySelector("#POKEMON").innerHTML = playerMove4;
-
-    
-    // console.log(document.querySelector("#FIGHT").innerHTML)
 }
 
 function enemyTurns(){
