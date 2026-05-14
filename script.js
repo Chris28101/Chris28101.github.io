@@ -3,7 +3,7 @@
 // while(gameLoop){
     
 // }
-
+window.open()
 let pokes = {};
 let enemyPokes = {};
 let enemyMovesNames = {}
